@@ -17,14 +17,7 @@ function App() {
       <BrowserRouter>
         <CartProvider>
           <Header />
-          
-         {/* 🛑 ENLACE DE PRUEBA DEFINITIVA: Modificamos el contraste */}
-          <div style={{ padding: '15px', textAlign: 'center', backgroundColor: 'black', border: '3px solid yellow', marginTop: '20px' }}>
-              <Link to="/admin/login" style={{ color: 'yellow', fontWeight: 'bold', fontSize: '20px' }}>
-                  [PRUEBA ADMIN: HAZ CLIC AQUÍ]
-              </Link>
-          </div>
-          {/* ------------------------------------------------------------------- */}
+        
           
           <Routes>
             <Route
