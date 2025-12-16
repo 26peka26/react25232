@@ -4,39 +4,40 @@ import { CartContext } from "./CartContext";
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
-  // Cambiamos la logica de las funciones SI usamos el Count para agregar "cantidad"
-
+  // La función 'exists' ahora es redundante ya que usamos 'find' en addItem,
+  // pero la mantenemos si se usa en otros lugares.
   const exists = (id) => {
     const exist = cart.some((p) => p.id === id);
     return exist;
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                         Agregamos map y spread, AHORA CON CONTROL DE STOCK                            */
+  /*            Agregamos map y spread, AHORA CON CONTROL DE STOCK              */
   /* -------------------------------------------------------------------------- */
   const addItem = (item) => {
-    // item debe contener: { id, name, price, stock, quantity: cantidad a agregar }
+    // ASUMIMOS que 'item' trae { id, name, price, stock, quantity: cantidad_a_agregar }
+    
+    // 1. Buscamos si el producto ya está en el carrito
+    const existingProduct = cart.find(prod => prod.id === item.id);
+    const stockAvailable = item.stock; // Stock total del producto (del JSON)
 
-    if (exists(item.id)) {
-      // Lógica para producto EXISTENTE
-      
-      const existingProduct = cart.find(prod => prod.id === item.id);
+    if (existingProduct) {
+      // === ESCENARIO 1: EL PRODUCTO YA ESTÁ EN EL CARRITO ===
+
       const currentQuantity = existingProduct.quantity;
       const requestedQuantity = item.quantity;
       const totalQuantityAfterAddition = currentQuantity + requestedQuantity;
-      const stockAvailable = item.stock; 
 
-      /* === CONTROL DE STOCK PARA PRODUCTOS EXISTENTES === */
+      /* === CONTROL DE STOCK === */
       if (totalQuantityAfterAddition > stockAvailable) {
         alert(`¡Stock insuficiente! Solo quedan ${stockAvailable} unidades de ${item.name} en total.`);
         return; // Detiene la adición
       }
-      /* ================================================= */
+      /* ======================== */
 
-      // map, cuido mutacion a nivel del array
+      // Si el stock es suficiente, actualiza la cantidad
       const updatedCart = cart.map((prod) => {
         if (prod.id === item.id) {
-          // cuido mutacion a nivel de objeto
           return { ...prod, quantity: totalQuantityAfterAddition };
         } else {
           return prod;
@@ -44,26 +45,27 @@ export const CartProvider = ({ children }) => {
       });
       setCart(updatedCart);
       alert(`Agregado al carrito`);
+
     } else {
-      // Lógica para producto NUEVO
+      // === ESCENARIO 2: EL PRODUCTO ES NUEVO EN EL CARRITO ===
       
       const requestedQuantity = item.quantity;
-      const stockAvailable = item.stock;
 
-      /* === CONTROL DE STOCK PARA PRODUCTOS NUEVOS === */
+      /* === CONTROL DE STOCK === */
       if (requestedQuantity > stockAvailable) {
         alert(`¡Stock insuficiente! Solo quedan ${stockAvailable} unidades de ${item.name}.`);
         return; // Detiene la adición
       }
-      /* ============================================== */
+      /* ======================== */
 
+      // Si el stock es suficiente, agrega el nuevo producto
       setCart([...cart, item]);
       alert(`${item.name} agregado`);
     }
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                         Eliminar producto con filter                        */
+  /*                         Eliminar producto con filter                       */
   /* -------------------------------------------------------------------------- */
   const deleteItem = (id) => {
     const filtered = cart.filter((p) => p.id !== id);
@@ -72,14 +74,14 @@ export const CartProvider = ({ children }) => {
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                                Vaciar carrito                               */
+  /*                                Vaciar carrito                              */
   /* -------------------------------------------------------------------------- */
   const clearCart = () => {
     setCart([]);
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                     Calcular total de ítems en el carrito                   */
+  /*                     Calcular total de ítems en el carrito                  */
   /* -------------------------------------------------------------------------- */
   const getTotalItems = () => {
     const totalItems = cart.reduce((acc, p) => acc + p.quantity, 0);
@@ -87,7 +89,7 @@ export const CartProvider = ({ children }) => {
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                                Calcular total                               */
+  /*                                Calcular total                              */
   /* -------------------------------------------------------------------------- */
   const total = () => {
     const total = cart.reduce((acc, p) => acc + p.price * p.quantity, 0);
