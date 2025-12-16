@@ -15,10 +15,10 @@ export const Nav = () => {
           <Link to={"/"}>Home</Link>
         </li>
         <li>
-          <Link to={"/category/salado"}>Salado</Link>
+          <Link to={"/category/marvel"}>Marvel</Link>
         </li>
         <li>
-          <Link to={"/category/dulce"}>Dulce</Link>
+          <Link to={"/category/dc"}>Dc</Link>
         </li>
         <li>
           <Link to={"/carrito"}>Carrito</Link>
