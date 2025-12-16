@@ -9,60 +9,174 @@ export const AdminLogin = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Credenciales del administrador: admin y 1234
-    const ADMIN_USER = 'admin';
+    // Credenciales del administrador
+    const ADMIN_USER_1 = 'admin';
+    const ADMIN_USER_2 = 'admin@example.com';
     const ADMIN_PASS = '1234';
 
-    if (username === ADMIN_USER && password === ADMIN_PASS) {
-      // 1. Guardar el estado de login para proteger las rutas
-      localStorage.setItem('isAdminLoggedIn', 'true'); 
-      alert('Bienvenido Administrador. Acceso concedido.');
-      
-      // 2. Redirigir al panel de administración
-      navigate('/admin'); 
+    if ((username === ADMIN_USER_1 || username === ADMIN_USER_2) && password === ADMIN_PASS) {
+      localStorage.setItem('isAdminLoggedIn', 'true');
+      alert('¡Acceso concedido! Bienvenido Administrador.');
+      navigate('/admin');
     } else {
       alert('Credenciales incorrectas. Inténtelo de nuevo.');
-      setPassword(''); // Limpia la contraseña
+      setPassword('');
     }
   };
 
   return (
-    <div className="admin-login-container" style={styles.container}>
-      <form onSubmit={handleLogin} style={styles.form}>
-        <h2 style={styles.title}>Acceso de Administrador</h2>
+    <div style={styles.backgroundContainer}>
+      <div style={styles.card}>
         
-        <div style={styles.inputGroup}>
-          <label htmlFor="username" style={styles.label}>Usuario (admin):</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            style={styles.input}
-          />
+        {/* Encabezado similar al de la imagen */}
+        <div style={styles.header}>
+          {/* Aquí iría la imagen del gato o un ícono */}
+          <div style={styles.iconPlaceholder}>🐱</div> 
+          <div>
+            <h1 style={styles.title}>Ingresar al Panel</h1>
+            <p style={styles.subtitle}>Área para administradores autorizados de cómics.</p>
+          </div>
+        </div>
+
+        {/* Banner de credenciales de DEMO */}
+        <div style={styles.demoBanner}>
+            Usuario: <b>admin</b> o <b>admin@example.com</b> · Contraseña: <b>1234</b>
         </div>
         
-        <div style={styles.inputGroup}>
-          <label htmlFor="password" style={styles.label}>Contraseña (1234):</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={styles.input}
-          />
-        </div>
-        
-        <button type="submit" style={styles.button}>
-          Iniciar Sesión
-        </button>
-      </form>
+        <form onSubmit={handleLogin}>
+          
+          {/* Input de Usuario */}
+          <div style={styles.inputGroup}>
+            <label htmlFor="username" style={styles.label}>Usuario</label>
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="admin o admin@example.com"
+              required
+              style={styles.input}
+            />
+          </div>
+          
+          {/* Input de Contraseña */}
+          <div style={styles.inputGroup}>
+            <label htmlFor="password" style={styles.label}>Contraseña</label>
+            <div style={styles.passwordContainer}>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••"
+                required
+                style={styles.input}
+              />
+              {/* Icono de ojo simulado */}
+              <span style={styles.eyeIcon}>👁️</span>
+            </div>
+          </div>
+          
+          {/* Botón de Ingresar */}
+          <button type="submit" style={styles.button}>
+            Ingresar
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
 
+
+// Estilos para recrear el look and feel de la imagen
+const styles = {
+    backgroundContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '80vh',
+        backgroundColor: '#f1f1f9', // Fondo ligero
+    },
+    card: {
+        padding: '30px',
+        border: '1px solid #e0e0e0',
+        borderRadius: '16px',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.05)',
+        backgroundColor: '#fff',
+        width: '350px',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    header: {
+        display: 'flex',
+        alignItems: 'center',
+        marginBottom: '20px',
+    },
+    iconPlaceholder: {
+        fontSize: '32px',
+        marginRight: '15px',
+    },
+    title: {
+        margin: 0,
+        fontSize: '24px',
+        fontWeight: '700',
+        color: '#333',
+    },
+    subtitle: {
+        margin: 0,
+        fontSize: '14px',
+        color: '#666',
+    },
+    demoBanner: {
+        backgroundColor: '#f3f0ff',
+        color: '#5e40c0',
+        padding: '12px',
+        borderRadius: '8px',
+        marginBottom: '20px',
+        fontSize: '14px',
+        textAlign: 'center',
+    },
+    inputGroup: {
+        marginBottom: '20px',
+    },
+    label: {
+        display: 'block',
+        marginBottom: '8px',
+        fontWeight: '600',
+        color: '#444',
+    },
+    passwordContainer: {
+        position: 'relative',
+    },
+    input: {
+        width: '100%',
+        padding: '12px',
+        border: '1px solid #ccc',
+        borderRadius: '8px',
+        boxSizing: 'border-box',
+        fontSize: '16px',
+    },
+    eyeIcon: {
+        position: 'absolute',
+        right: '12px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        cursor: 'pointer',
+        color: '#999',
+    },
+    button: {
+        padding: '14px 15px',
+        backgroundColor: '#5e40c0', // Tono violeta de la imagen
+        color: 'white',
+        border: 'none',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        fontSize: '18px',
+        fontWeight: '600',
+        width: '100%',
+        transition: 'background-color 0.2s',
+    }
+};
 
 // Estilos básicos en línea para una mejor visualización inmediata
 const styles = {
