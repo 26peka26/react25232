@@ -4,7 +4,7 @@ import { CartContext } from "./CartContext";
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
-  //Cambiamos la logica de las funciones SI usamos el Count para agregar "cantidad"
+  // Cambiamos la logica de las funciones SI usamos el Count para agregar "cantidad"
 
   const exists = (id) => {
     const exist = cart.some((p) => p.id === id);
@@ -12,15 +12,32 @@ export const CartProvider = ({ children }) => {
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                           Agregamos map y spread                           */
+  /*                         Agregamos map y spread, AHORA CON CONTROL DE STOCK                            */
   /* -------------------------------------------------------------------------- */
   const addItem = (item) => {
+    // item debe contener: { id, name, price, stock, quantity: cantidad a agregar }
+
     if (exists(item.id)) {
-      //map, cuido mutacion a nivel del array
+      // Lógica para producto EXISTENTE
+      
+      const existingProduct = cart.find(prod => prod.id === item.id);
+      const currentQuantity = existingProduct.quantity;
+      const requestedQuantity = item.quantity;
+      const totalQuantityAfterAddition = currentQuantity + requestedQuantity;
+      const stockAvailable = item.stock; 
+
+      /* === CONTROL DE STOCK PARA PRODUCTOS EXISTENTES === */
+      if (totalQuantityAfterAddition > stockAvailable) {
+        alert(`¡Stock insuficiente! Solo quedan ${stockAvailable} unidades de ${item.name} en total.`);
+        return; // Detiene la adición
+      }
+      /* ================================================= */
+
+      // map, cuido mutacion a nivel del array
       const updatedCart = cart.map((prod) => {
         if (prod.id === item.id) {
-          //cuido mutacion a nivel de objeto
-          return { ...prod, quantity: prod.quantity + item.quantity };
+          // cuido mutacion a nivel de objeto
+          return { ...prod, quantity: totalQuantityAfterAddition };
         } else {
           return prod;
         }
@@ -28,13 +45,25 @@ export const CartProvider = ({ children }) => {
       setCart(updatedCart);
       alert(`Agregado al carrito`);
     } else {
+      // Lógica para producto NUEVO
+      
+      const requestedQuantity = item.quantity;
+      const stockAvailable = item.stock;
+
+      /* === CONTROL DE STOCK PARA PRODUCTOS NUEVOS === */
+      if (requestedQuantity > stockAvailable) {
+        alert(`¡Stock insuficiente! Solo quedan ${stockAvailable} unidades de ${item.name}.`);
+        return; // Detiene la adición
+      }
+      /* ============================================== */
+
       setCart([...cart, item]);
       alert(`${item.name} agregado`);
     }
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                        Eliminar producto con filter                        */
+  /*                         Eliminar producto con filter                        */
   /* -------------------------------------------------------------------------- */
   const deleteItem = (id) => {
     const filtered = cart.filter((p) => p.id !== id);
@@ -43,26 +72,22 @@ export const CartProvider = ({ children }) => {
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                               Vaciar carrito                               */
+  /*                                Vaciar carrito                               */
   /* -------------------------------------------------------------------------- */
   const clearCart = () => {
     setCart([]);
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                    Calcular total de ítems en el carrito                   */
+  /*                     Calcular total de ítems en el carrito                   */
   /* -------------------------------------------------------------------------- */
   const getTotalItems = () => {
-    // if (cart.length) {
-    //   return cart.length;
-    // }
-
     const totalItems = cart.reduce((acc, p) => acc + p.quantity, 0);
     return totalItems;
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                               Calcular total                               */
+  /*                                Calcular total                               */
   /* -------------------------------------------------------------------------- */
   const total = () => {
     const total = cart.reduce((acc, p) => acc + p.price * p.quantity, 0);
@@ -71,7 +96,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const checkout = () => {
-    const ok = confirm("¿Serguro que quiere finalizar la compra?");
+    const ok = confirm("¿Seguro que quiere finalizar la compra?");
 
     if (ok) {
       alert("¡Compra realizada con éxito!");
