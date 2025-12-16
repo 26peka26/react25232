@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { Nav } from "../Nav/Nav";
 import logo from '../../assets/logo.png';
+
 export const Header = () => {
     const navigate = useNavigate(); 
     const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -12,7 +13,6 @@ export const Header = () => {
             setIsAdminLoggedIn(loggedIn);
         };
         
-        // La detección de cambios de sesión se mantiene
         window.addEventListener('storage', checkLoginStatus);
         checkLoginStatus();
         return () => window.removeEventListener('storage', checkLoginStatus);
@@ -27,21 +27,19 @@ export const Header = () => {
     };
 
     return (
-        <header style={styles.header}>
+        // El Header necesita ser relative para que los botones se posicionen respecto a él
+        <header style={styles.header}> 
             <div style={styles.container}>
                 {/* 1. Logo */}
                 <Link to={"/"} style={styles.link}>
                     <img src={logo} alt="Logo" className="header-logo" style={styles.logo} />
                 </Link>
                 
-                {/* 2. Navegación */}
+                {/* 2. Navegación (Su CSS puede ser el problema, lo dejamos solo) */}
                 <Nav />
                 
-                {/* 3. Controles y Botones (Carrito y Admin) */}
-                <div style={styles.headerControls}>
-                    {/* Aquí iría tu componente de carrito (ej: <CartWidget />) */}
-
-                    {/* Botón de ADMINISTRACIÓN (Acceso o Panel/Logout) */}
+                {/* 3. Controles con Posición Absoluta (Aislando el conflicto) */}
+                <div style={styles.adminControlsAbsolute}> 
                     {isAdminLoggedIn ? (
                         <>
                             <Link to="/admin" style={{ ...styles.adminButton, ...styles.manageButton }}>
@@ -70,12 +68,14 @@ const styles = {
         color: 'white',
         padding: '10px 0',
         zIndex: 1000, 
+        position: 'relative', // CRUCIAL para que los hijos absolutos funcionen correctamente
     },
     container: {
         maxWidth: '1200px',
         margin: '0 auto',
+        // Ya no necesitamos flexbox aquí, ya que los admin controls son absolutos
         display: 'flex', 
-        justifyContent: 'space-between', 
+        justifyContent: 'flex-start', // Dejamos que el Nav y el Logo se organicen
         alignItems: 'center',
         padding: '0 20px',
     },
@@ -86,68 +86,15 @@ const styles = {
     logo: {
         height: '50px',
     },
-    headerControls: { // Nuevo contenedor para agrupar Admin y Carrito
-        display: 'flex',
-        gap: '20px', // Espacio entre el carrito y los botones admin
-        alignItems: 'center',
-    },
-    adminButton: {
-        backgroundColor: '#5e40c0', 
-        color: 'white',
-        padding: '8px 15px',
-        borderRadius: '5px',
-        textDecoration: 'none',
-        fontWeight: 'bold',
-        fontSize: '14px',
-        border: 'none',
-        cursor: 'pointer',
-    },
-    manageButton: {
-        backgroundColor: '#007bff', 
-    },
-    logoutButton: {
-        backgroundColor: 'red',
-        color: 'white',
-        padding: '8px 15px',
-        borderRadius: '5px',
-        border: 'none',
-        cursor: 'pointer',
-        fontWeight: 'bold',
-        fontSize: '14px',
-    }
-};
-
-
-// ⚠️ ESTILOS DEFINIDOS AQUÍ para forzar el layout y la visibilidad
-const styles = {
-    header: {
-        backgroundColor: '#333',
-        color: 'white',
-        padding: '10px 0',
-        zIndex: 1000, // Alto z-index para asegurar que no quede detrás de nada
-    },
-    container: {
-        maxWidth: '1200px',
-        margin: '0 auto',
-        display: 'flex', // Crucial: Organiza en una fila
-        justifyContent: 'space-between', // Crucial: Separa Logo, Nav y Botones
-        alignItems: 'center',
-        padding: '0 20px',
-    },
-    link: {
-        textDecoration: 'none',
-        color: 'white',
-    },
-    logo: {
-        height: '50px', // Ajusta el tamaño de tu logo
-    },
-    adminControls: {
+    // Estilo especial para forzar la visibilidad absoluta
+    adminControlsAbsolute: { 
+        position: 'absolute',
+        right: '20px', // Lo coloca en el borde derecho del header
+        top: '50%', // Centra verticalmente
+        transform: 'translateY(-50%)', // Ajusta para el centro perfecto
         display: 'flex',
         gap: '10px',
-        alignItems: 'center',
-        // Estilo de Alto Contraste para la prueba final (se puede quitar después)
-        border: '2px dashed yellow', 
-        padding: '5px',
+        zIndex: 1001, // Asegura que esté por encima de cualquier otro elemento del header
     },
     adminButton: {
         backgroundColor: '#5e40c0', 
