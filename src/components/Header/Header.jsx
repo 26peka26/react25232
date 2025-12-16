@@ -2,26 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { Nav } from "../Nav/Nav";
 import logo from '../../assets/logo.png';
-// Eliminamos la importación del CSS problemático: import './Header.css';
-
 export const Header = () => {
     const navigate = useNavigate(); 
     const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
-    // Lógica para verificar el estado de login en localStorage
     useEffect(() => {
         const checkLoginStatus = () => {
             const loggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
             setIsAdminLoggedIn(loggedIn);
         };
         
+        // La detección de cambios de sesión se mantiene
         window.addEventListener('storage', checkLoginStatus);
         checkLoginStatus();
-
         return () => window.removeEventListener('storage', checkLoginStatus);
     }, []);
 
-    // Función para cerrar sesión
     const handleLogout = () => {
         localStorage.removeItem('isAdminLoggedIn');
         setIsAdminLoggedIn(false); 
@@ -31,22 +27,22 @@ export const Header = () => {
     };
 
     return (
-        // Usamos styles.header para el fondo
         <header style={styles.header}>
-            {/* Usamos styles.container para forzar el layout flexible */}
             <div style={styles.container}>
                 {/* 1. Logo */}
                 <Link to={"/"} style={styles.link}>
-                    <img src={logo} alt="Logo de la tienda de cómics" className="header-logo" style={styles.logo} />
+                    <img src={logo} alt="Logo" className="header-logo" style={styles.logo} />
                 </Link>
                 
                 {/* 2. Navegación */}
                 <Nav />
                 
-                {/* 3. Botones (styles.adminControls asegura el espacio) */}
-                <div style={styles.adminControls}>
+                {/* 3. Controles y Botones (Carrito y Admin) */}
+                <div style={styles.headerControls}>
+                    {/* Aquí iría tu componente de carrito (ej: <CartWidget />) */}
+
+                    {/* Botón de ADMINISTRACIÓN (Acceso o Panel/Logout) */}
                     {isAdminLoggedIn ? (
-                        // Administrador logueado
                         <>
                             <Link to="/admin" style={{ ...styles.adminButton, ...styles.manageButton }}>
                                 Panel Admin
@@ -56,7 +52,6 @@ export const Header = () => {
                             </button>
                         </>
                     ) : (
-                        // Nadie logueado
                         <Link to="/admin/login" style={styles.adminButton}>
                             Acceso Admin
                         </Link>
@@ -65,6 +60,61 @@ export const Header = () => {
             </div>
         </header>
     );
+};
+
+
+// Estilos para forzar el layout y asegurar la visibilidad
+const styles = {
+    header: {
+        backgroundColor: '#333',
+        color: 'white',
+        padding: '10px 0',
+        zIndex: 1000, 
+    },
+    container: {
+        maxWidth: '1200px',
+        margin: '0 auto',
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        padding: '0 20px',
+    },
+    link: {
+        textDecoration: 'none',
+        color: 'white',
+    },
+    logo: {
+        height: '50px',
+    },
+    headerControls: { // Nuevo contenedor para agrupar Admin y Carrito
+        display: 'flex',
+        gap: '20px', // Espacio entre el carrito y los botones admin
+        alignItems: 'center',
+    },
+    adminButton: {
+        backgroundColor: '#5e40c0', 
+        color: 'white',
+        padding: '8px 15px',
+        borderRadius: '5px',
+        textDecoration: 'none',
+        fontWeight: 'bold',
+        fontSize: '14px',
+        border: 'none',
+        cursor: 'pointer',
+    },
+    manageButton: {
+        backgroundColor: '#007bff', 
+    },
+    logoutButton: {
+        backgroundColor: 'red',
+        color: 'white',
+        padding: '8px 15px',
+        borderRadius: '5px',
+        border: 'none',
+        cursor: 'pointer',
+        fontWeight: 'bold',
+        fontSize: '14px',
+    }
 };
 
 
