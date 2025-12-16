@@ -18,11 +18,11 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<ItemListContainer titulo={"Bienvenidos"} />}
+              element={<ItemListContainer titulo={"Bienvenidos a COMIc STORE"} />}
             />
             <Route
               path="/category/:category"
-              element={<ItemListContainer titulo={"Bienvenidos"} />}
+              element={<ItemListContainer titulo={"Bienvenidos CS"} />}
             />
             <Route path="/detail/:id" element={<ItemDetailContainer />} />
             <Route path="/carrito" element={<Cart />} />
