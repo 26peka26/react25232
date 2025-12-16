@@ -18,9 +18,9 @@ function App() {
         <CartProvider>
           <Header />
           
-          {/* 🛑 ENLACE DE PRUEBA DEFINITIVA: Se renderiza aquí, fuera de las Rutas. */}
-          <div style={{ padding: '10px', textAlign: 'center', backgroundColor: '#f9e0e0', border: '1px solid red' }}>
-              <Link to="/admin/login" style={{ color: 'red', fontWeight: 'bold' }}>
+         {/* 🛑 ENLACE DE PRUEBA DEFINITIVA: Modificamos el contraste */}
+          <div style={{ padding: '15px', textAlign: 'center', backgroundColor: 'black', border: '3px solid yellow', marginTop: '20px' }}>
+              <Link to="/admin/login" style={{ color: 'yellow', fontWeight: 'bold', fontSize: '20px' }}>
                   [PRUEBA ADMIN: HAZ CLIC AQUÍ]
               </Link>
           </div>
