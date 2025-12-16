@@ -8,32 +8,40 @@ import { CartProvider } from "./context/CartContext/CartProvider";
 import { Cart } from "./components/Cart/Cart";
 import { ProductFormContainer } from "./components/adminComponents/ProductFormContainer/ProductFormContainer";
 
+// NUEVA IMPORTACIÓN: Componente de Login
+import { AdminLogin } from "./components/adminComponents/AdminLogin/AdminLogin"; 
+// ^^^ Asegúrate que la ruta de importación sea correcta.
+
 function App() {
-  return (
-    <>
-      <BrowserRouter>
-        <CartProvider>
-          <Header />
-          {/* Dejamos fuera del Routes lo que queremos que no se vuelva a renderizar al navegar */}
-          <Routes>
-            <Route
-              path="/"
-              element={<ItemListContainer titulo={"Bienvenidos a COMIC STORE"} />}
-            />
-            <Route
-              path="/category/:category"
-              element={<ItemListContainer titulo={"Bienvenidos CS"} />}
-            />
-            <Route path="/detail/:id" element={<ItemDetailContainer />} />
-            <Route path="/carrito" element={<Cart />} />
-            <Route path="/admin" element={<ProductFormContainer />} />
-          </Routes>
-          {/* Dejamos fuera del Routes lo que queremos que no se vuelva a renderizar al navegar */}
-          <Footer />
-        </CartProvider>
-      </BrowserRouter>
-    </>
-  );
+  return (
+    <>
+      <BrowserRouter>
+        <CartProvider>
+          <Header />
+          <Routes>
+            <Route
+              path="/"
+              element={<ItemListContainer titulo={"Bienvenidos a COMIC STORE"} />}
+            />
+            <Route
+              path="/category/:category"
+              element={<ItemListContainer titulo={"Bienvenidos CS"} />}
+            />
+            <Route path="/detail/:id" element={<ItemDetailContainer />} />
+            <Route path="/carrito" element={<Cart />} />
+            
+            {/* === RUTA DE LOGIN DEL ADMINISTRADOR === */}
+            <Route path="/admin/login" element={<AdminLogin />} /> 
+            {/* ======================================= */}
+            
+            {/* RUTA PROTEGIDA (La lógica de protección irá dentro de ProductFormContainer) */}
+            <Route path="/admin" element={<ProductFormContainer />} />
+          </Routes>
+          <Footer />
+        </CartProvider>
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;
