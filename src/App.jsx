@@ -18,7 +18,7 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<ItemListContainer titulo={"Bienvenidos a COMIc STORE"} />}
+              element={<ItemListContainer titulo={"Bienvenidos a COMIC STORE"} />}
             />
             <Route
               path="/category/:category"
