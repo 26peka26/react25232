@@ -7,7 +7,8 @@ export const Footer = () => {
                     [BOTÓN DE PRUEBA: ACCESO ADMIN]
                 </Link>
             </div>
-            <p>Pagina creada dentro del proyecto React25232</p>
+            
+            <p>Pagina creada dentro del proyecto React 25232</p>
         </footer>
     );
 };
