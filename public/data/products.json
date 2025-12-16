@@ -6,6 +6,7 @@
     "category": "dc",
     "description": "La primera aparición de Superman.",
     "imageUrl": "/images/Action comic.jpg"
+    "stock": 1;
   },
   {
     "id": "2",
@@ -14,6 +15,7 @@
     "category": "marvel",
     "description": "Este número es fundamental porque relanzó la franquicia tras años de cancelaciones.",
     "imageUrl": "/images/Segunda genesis.jpg"
+    "stock": 7;
   },
   {
     "id": "3",
@@ -22,5 +24,6 @@
     "price": 75000,
     "description": "El origen historico.",
     "imageUrl": "/images/Patrulla x 1.jpg"
+    "stock": 2;
   }
 ]
