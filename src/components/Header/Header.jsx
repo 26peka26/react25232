@@ -4,7 +4,7 @@ import { Nav } from "../Nav/Nav";
 export const Header = () => {
   return (
     <header>
-      <Link to={"/"}>LOGO</Link>
+      <Link to={"/"}>COMIC STORE</Link>
       <Nav />
     </header>
   );
