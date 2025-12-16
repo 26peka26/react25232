@@ -10,7 +10,7 @@
   {
     "id": "2",
     "name": "Giant-Size X-Men 1.",
-    "price": 3200,
+    "price": 37500,
     "category": "marvel",
     "description": "Este número es fundamental porque relanzó la franquicia tras años de cancelaciones.",
     "imageUrl": "/images/Segunda genesis.jpg"
@@ -19,8 +19,8 @@
     "id": "3",
     "name": "The X-Men 1.",
     "category": "marvel",
-    "price": 1200,
+    "price": 75000,
     "description": "El origen historico.",
-    "imageUrl": "/images/patrulla X 1.jpg"
+    "imageUrl": "/images/patrulla x 1.jpg"
   }
 ]
